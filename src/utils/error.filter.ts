@@ -9,8 +9,6 @@ export class ErrorFilter implements ExceptionFilter {
   catch(exception: any, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
-    console.log(response.status)
-    console.log(response.statusCode)
     const request = ctx.getRequest<Request>();
     // if(response.statusCode !==200 && response.statusCode!==201){
 

@@ -1,0 +1,23 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type IOrderDto {
+  id: ID!
+  guestName: String!
+  guestContact: String!
+  expectedArrivalTime: String!
+  tableSize: Float!
+  status: String!
+}
+
+type Query {
+  getOrderList: [IOrderDto!]!
+  getOrderConditionList(status: String!, expectedArrivalTime: String!): [IOrderDto!]!
+}
+
+type Mutation {
+  addOrder(guestName: String!, guestContact: String!, expectedArrivalTime: String!, tableSize: Float!): String!
+  updateOrder(id: String!, guestName: String, guestContact: String, expectedArrivalTime: String, tableSize: Float, status: String): String!
+  login(userName: String!, password: String!): String!
+}
