@@ -6,7 +6,7 @@ import { ApiException } from '../utils/api.exception';
 
 @Injectable()
 export class JwtInterceptorGQL implements NestInterceptor {
-  constructor(private jwtService: JwtService) {}
+  constructor(private readonly jwtService: JwtService) {}
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const ctx = GqlExecutionContext.create(context);
@@ -27,7 +27,6 @@ export class JwtInterceptorGQL implements NestInterceptor {
         // 处理 token 验证失败的情况
         throw new ApiException('认证出错',HttpStatus.BAD_REQUEST)
 
-        console.error(err);
         
       }
     }

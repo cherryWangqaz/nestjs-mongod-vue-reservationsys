@@ -13,22 +13,36 @@ export class OrderService implements IOrder {
     constructor(
     ){}
 
-    public async addOrder(info: IAddOrder): Promise<void> {
-        //TODO: add Logics
-        await this.addOrderStore(info)
-        // throw new Error("Method not implemented.");
+    //用户添加订单
+    public async addOrder(info: IAddOrder): Promise<string> {
+        //添加信息至数据库
+        let token = await this.addOrderStore(info)
+        //将数据库主键作为该订单的唯一id
+
+        //生成唯一url，为后续修改及取消服务
+        return token
     }
 
-    public async updateOrder(id: string, info: IUpdateOrder, curUser: IUserTokenInfo): Promise<void> {
-        //判断当前用户是否有权限修改订单
-        if(curUser.role!==IUserRole.employee){
-            const order = await this.getOrderByIdStore(id)
-            if(order.guestName!==curUser.username){
-                throw new Error('当前用户无权限操作改订单')
-            }
-        }
+    //用户更新订单具体信息
+    public async updateOrder(id: string, info: IUpdateOrder): Promise<void> {
+        //更新
         await this.updateOrderStore(id, info)
-        // throw new Error("Method not implemented.");
+    }
+
+    //用户取消订单
+    public async cancelOrder(id: string): Promise<void> {
+        //更新
+        await this.updateOrderStore(id,{
+            status: IOrderStatus.Cancelled
+        } )
+    }
+
+    //雇员修改订单状态
+    public async updOrderStatus(id: string, status: IOrderStatus): Promise<void> {
+        //更新
+        await this.updateOrderStore(id,{
+            status
+        } )
     }
 
     public async getOrderList(): Promise<IOrderInfo[]> {
@@ -43,14 +57,15 @@ export class OrderService implements IOrder {
         return await this.getOrderListByGuestNameStore(name)
     }
 
-    private async addOrderStore(info: IAddOrder): Promise<void> {
+    private async addOrderStore(info: IAddOrder): Promise<string> {
         const entity = new OrderEntity();
         entity.guestName = info.guestName;
         entity.guestContact = info.guestContact;
         entity.expectedArrivalTime = info.expectedArrivalTime;
-        entity.tableSize = info.tableSize;
-        entity.status = IOrderStatus.onProcess;
+        entity.size = info.size;
+        entity.status = IOrderStatus.Requested;
         await entity.save() 
+        return entity.id.toString()
     }
     
     private async updateOrderStore(id: string, info: IUpdateOrder): Promise<void> {
@@ -88,7 +103,7 @@ export class OrderService implements IOrder {
             guestName: entity.guestName,
             guestContact: entity.guestContact,
             expectedArrivalTime: entity.expectedArrivalTime,
-            tableSize: entity.tableSize,
+            size: entity.size,
             status: entity.status
         }
     }

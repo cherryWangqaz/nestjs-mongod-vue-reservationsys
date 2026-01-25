@@ -9,17 +9,20 @@ export class OrderEntity extends BaseEntity {
     @Column()
     guestName: string;
 
-    @Column()
+    @Column({
+        comment:'顾客联系方式电话/email'
+    })
     guestContact: string;
 
     @Column()
     expectedArrivalTime: string;
 
     @Column()
-    tableSize: number;
+    size: number;
 
-    @Column({default: IOrderStatus.onProcess,enum:IOrderStatus})
+    @Column({default: IOrderStatus.Requested,enum:IOrderStatus})
     status: IOrderStatus;
+    
 
 
 }

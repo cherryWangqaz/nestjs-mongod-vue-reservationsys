@@ -9,7 +9,7 @@ export class StoreModule {
                 type:'mongodb',
                 host:'192.168.20.131',
                 port:27017,
-                database:'reservation',
+                database:'reservation-test',
                 entities:[
                     OrderEntity
                 ],

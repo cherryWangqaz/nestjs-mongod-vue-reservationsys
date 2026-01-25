@@ -13,7 +13,7 @@ import { OrderResolver } from "./order.resolver";
     providers:[
         OrderService,
         JwtService,
-        OrderResolver
+        // OrderResolver
     ],
 })
 export class OrderModule {}

@@ -22,7 +22,7 @@ export class OrderResolver{
         @Args('guestName') guestName: string,
         @Args('guestContact') guestContact: string,
         @Args('expectedArrivalTime') expectedArrivalTime: string,
-        @Args('tableSize') tableSize: number,
+        @Args('size') size: number,
         @Context() context: any,
 
     ):Promise<string>{
@@ -36,7 +36,7 @@ export class OrderResolver{
             guestContact,
             guestName,
             expectedArrivalTime,
-            tableSize
+            size
         })
         return 'success'
     }
@@ -49,7 +49,7 @@ export class OrderResolver{
         @Args('guestName',{nullable: true}) guestName?: string,
         @Args('guestContact',{nullable: true}) guestContact?: string,
         @Args('expectedArrivalTime',{nullable: true}) expectedArrivalTime?: string,
-        @Args('tableSize',{nullable: true}) tableSize?: number,
+        @Args('size',{nullable: true}) size?: number,
         @Args('status',{nullable: true}) status?: IOrderStatus,
     ):Promise<string>{
         const req = context.req;
@@ -61,9 +61,9 @@ export class OrderResolver{
             guestContact,
             guestName,
             expectedArrivalTime,
-            tableSize,
+            size,
             status
-        },user)
+        })
         return 'success'
     }
     
@@ -90,7 +90,6 @@ export class OrderResolver{
     ):Promise<IOrderDto[]>{
         const req = context.req;
         const user = req.user;
-        console.log(user)
         if(!user){
             throw new ApiException('用户未认证',400)
 

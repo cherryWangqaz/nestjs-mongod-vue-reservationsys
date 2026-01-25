@@ -22,33 +22,46 @@ export class OrderController {
     ){}
 
     @Post('/add')
-    // @ApiBody({
-    //     type:AddOrderDto
-    // })
-    @ApiOperation({
-        summary:"add order"
+    @ApiBody({
+        type:AddOrderDto
     })
-    @UseInterceptors(JwtInterceptor)
-    public async addOrder(@Body() info:AddOrderDto,@Request() req):Promise<void>{
-        const user = req.user;
-        if(user.role == IUserRole.guest){
-
-            info.guestName = user.username;
-        }
-        if(!user){
-            throw new ApiException('用户未认证',400)
-        }
-        console.log('-------------addORder',info,user)
+    @ApiOperation({
+        summary:"添加订单",
+        description:'用户添加订单'
+    })
+    public async addOrder(@Body() info:AddOrderDto):Promise<string>{
         return await this.orderService.addOrder(info)
+    }
+
+    @Put('/cancel/guest/:id')
+    @ApiOperation({
+        summary:"取消订单",
+        description:'用户取消订单'
+    })
+    public async cancelOrder(@Param('id') id: string):Promise<void>{
+        return await this.orderService.cancelOrder(id)
+    }
+
+    @Put('/upd/guest/:id')
+    @ApiOperation({
+        summary:"更改订单",
+        description:'用户更改订单'
+    })
+    @ApiBody({
+        type:AddOrderDto
+    })
+    public async updOrderGuest(@Param('id') id: string,@Body() info:UpdateOrderDto):Promise<void>{
+        return await this.orderService.updateOrder(id,info)
     }
 
 
     @Put('/update/:id')
-    // @ApiBody({
-    //     type:AddOrderDto
-    // })
+    @ApiBody({
+        type:AddOrderDto
+    })
     @ApiOperation({
-        summary:"update order"
+        summary:"更新订单",
+        description:'雇员更新订单'
     })
     @UseInterceptors(JwtInterceptor)
     public async updateOrder(@Body() info:UpdateOrderDto,@Param('id') id: string,@Request() req):Promise<void>{
@@ -56,7 +69,7 @@ export class OrderController {
         if(!user){
             throw new ApiException('用户未认证',400)
         }
-        return await this.orderService.updateOrder(id,info,user)
+        return await this.orderService.updateOrder(id,info)
     }
 
     @Get()
@@ -66,13 +79,9 @@ export class OrderController {
     @UseInterceptors(JwtInterceptor)
     public async getOrderList(@Request() req):Promise<IOrderDto[]>{
         const user = req.user;
-        console.log(user)
         if(!user){
             throw new ApiException('用户未认证',400)
 
-        }
-        if(user.role!==IUserRole.employee){
-            return await this.orderService.getOrderListByGuestName(user.username)
         }
         return await this.orderService.getOrderList()
     }
@@ -88,15 +97,11 @@ export class OrderController {
     })
     public async getOrderConditionList(@Request() req,@Query('status') status:IOrderStatus,@Param('expectedArrivalTime') time: string):Promise<IOrderDto[]>{
         const user = req.user;
-        console.log(user)
         if(!user){
             throw new ApiException('用户未认证',400)
 
         }
-        if(user.role!==IUserRole.employee){
-            throw new ApiException('用户不提供该功能',400)
-
-        }
         return await this.orderService.getOrderListByCondition({status:status,expectedArrivalTime:time})
     }
+
 }

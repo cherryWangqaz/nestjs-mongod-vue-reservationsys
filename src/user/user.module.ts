@@ -13,7 +13,7 @@ import { UserResolver } from "./user.resolver";
     providers:[
         JwtAuthService,
         JwtService,
-        UserResolver
+        // UserResolver
     ],
 })
 export class UserModule {}

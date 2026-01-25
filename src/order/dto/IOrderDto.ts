@@ -14,31 +14,31 @@ export class IOrderDto {
     @ApiProperty({
         description:'顾客名字'
     })
-    guestName: string;
+    guestName?: string;
 
     @ApiProperty({
         description:'顾客联系方式'
     })
     @Field()
-    guestContact: string;
+    guestContact?: string;
 
     @ApiProperty({
         description:"预期到达时间"
     })
     @Field()
-    expectedArrivalTime: string;
+    expectedArrivalTime?: string;
 
     @ApiProperty({
         description:"定位大小"
     })
     @Field()
-    tableSize: number;
+    tableSize?: number;
 
     @ApiProperty({
         description:"订单状态",
         enum:IOrderStatus
     })
     @Field()
-    status: IOrderStatus;
+    status?: IOrderStatus;
 
 }

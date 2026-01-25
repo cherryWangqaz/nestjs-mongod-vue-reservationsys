@@ -20,6 +20,6 @@ export class AddOrderDto {
     @ApiProperty({
         description:"定位大小"
     })
-    tableSize: number;
+    size: number;
 
 }

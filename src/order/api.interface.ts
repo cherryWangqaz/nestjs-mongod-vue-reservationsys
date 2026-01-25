@@ -1,9 +1,10 @@
 import { IUserTokenInfo } from "../user/api.interface";
 
 export enum IOrderStatus {
-    canceled = "canceled",
-    finished = "finished",
-    onProcess = "onProcess"
+    Requested = 'Requested',
+    Approved = 'Approved',
+    Cancelled = "cancelled",
+    Completed = "completed",
 }
 
 
@@ -11,11 +12,15 @@ export interface IAddOrder {
     guestName: string;
     guestContact: string;
     expectedArrivalTime: string;
-    tableSize: number;
+    size: number;
 }
 
-export interface IUpdateOrder extends IAddOrder{
-    status: IOrderStatus
+export interface IUpdateOrder{
+    status?: IOrderStatus;
+    guestName?: string;
+    guestContact?: string;
+    expectedArrivalTime?: string;
+    size?: number;
 }
 
 export interface IOrderInfo extends IUpdateOrder {
@@ -28,7 +33,7 @@ export interface ICondition {
 }
 
 export interface IOrder {
-    addOrder(info: IAddOrder): Promise<void>;
+    addOrder(info: IAddOrder): Promise<string>;
     updateOrder(id: string, info: IUpdateOrder, curUser: IUserTokenInfo): Promise<void>;
     getOrderList(): Promise<IOrderInfo[]>
 }

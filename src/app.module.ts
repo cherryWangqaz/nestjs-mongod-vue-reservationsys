@@ -25,6 +25,7 @@ import { JwtInterceptorGQL } from './jwt/jwt.interceptorgql';
       secret:'123123',
       signOptions:{expiresIn:'10m'}
     }),
+    /*
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: path.join(process.cwd(),'src/schema.gql'),
@@ -32,15 +33,19 @@ import { JwtInterceptorGQL } from './jwt/jwt.interceptorgql';
 
       }
     })
+      */
   ],
   providers: [
     {
       provide: APP_INTERCEPTOR,
       useClass:JwtInterceptor
-    },{
+    }
+    
+    /*{
       provide: APP_INTERCEPTOR,
       useClass: JwtInterceptorGQL
     }
+      */
   ],
 })
 export class AppModule {}
